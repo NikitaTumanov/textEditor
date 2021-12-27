@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+    <title>Товары</title>
+    <style>
+        li{
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<ul class="nav nav-tabs">
+    <a style="margin-left: 25px" class="navbar-brand" href="#">Совместный редактор</a>
+    <li class="nav-item">
+        <a class="nav-link" href="myfiles">Мои файлы</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="login">Сменить аккаунт
+            <div style="font-size: 11px; display: inline">
+                <p style="display: inline">&#160;(Вы вошли как</p>
+                <p style="display: inline" th:text="${myName}"></p>
+                <p style="display: inline">)</p>
+            </div>
+        </a>
+    </li>
+</ul>
+
+<div style="margin: 40px 40px 0 40px;">
+    <h2>Найти файл</h2>
+    <form name="Найти файл по названию" method="get" action="myfiles/takebyname">
+        <label>
+            <input type="text" name="name" placeholder="Название файла"/>
+        </label>
+        <button class="btn btn-primary" type="submit">Поиск</button>
+    </form>
+
+    <h2>Открыть файл</h2>
+    <form name="Добавить файл" method="post" action="/myfiles">
+        <label>
+            <input type="hidden" name="action" value="open"/>
+        </label>
+        <label>
+            <input type="text" name="name" placeholder="Название файла"/>
+        </label>
+        <label>
+            <input type="text" name="password" placeholder="Пароль от файла"/>
+        </label>
+        <label>
+            <input type="text" name="author" placeholder="Имя автора"/>
+        </label>
+        <button class="btn btn-warning" type="submit">Открыть</button>
+    </form>
+
+    <h2>Создать файл</h2>
+    <form name="Добавить файл" method="post" action="/myfiles">
+        <label>
+            <input type="hidden" name="action" value="create"/>
+        </label>
+        <label>
+            <input type="text" name="name" placeholder="Название файла"/>
+        </label>
+        <label>
+            <input type="text" name="password" placeholder="Пароль от файла"/>
+        </label>
+        <button class="btn btn-success" type="submit">Создать</button>
+    </form>
+
+    <table class="table table-hover">
+        <tr>
+            <th>Название файла</th>
+            <th>Пароль</th>
+            <th>ID автора</th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        <th:block th:each="file : ${files}">
+            <tr>
+                <td th:text="${file.getName()}"></td>
+                <td th:text="${file.getPassword()}"></td>
+                <td th:text="${file.getUserId()}"></td>
+
+                <td>
+                    <form name="Удалить файл" method="post" action="/myfiles">
+                        <label>
+                            <input type="hidden" name="action" value="delete"/>
+                        </label>
+                        <label>
+                            <input type="hidden" name="id" th:value="${file.getId()}"/>
+                        </label>
+                        <button class="btn btn-danger" type="submit">Удалить</button>
+                    </form>
+                </td>
+
+                <td>
+                    <form name="Открыть файл" method="post" action="/myfiles">
+                        <label>
+                            <input type="hidden" name="action" value="open"/>
+                        </label>
+                        <label>
+                            <input type="hidden" name="name" th:value="${file.getName()}"/>
+                        </label>
+                        <label>
+                            <input type="hidden" name="password" th:value="${file.getPassword()}"/>
+                        </label>
+                        <label>
+                            <input type="hidden" name="author" th:value="${myName}"/>
+                        </label>
+                        <button class="btn btn-warning" type="submit">Открыть</button>
+                    </form>
+                </td>
+            </tr>
+        </th:block>
+
+    </table>
+</div>
+<div style="margin-top: 60px">&#160;</div>
+<footer class="footer mt-auto py-3 bg-light" style="position: fixed; z-index: 101; left: 0; bottom: 0; width: 100%; height: 80px;">
+    <div class="container">
+        <span class="text-muted">Работу по созданию приложения на тему "Совместный редактор документов" выполнил студент группы ИКБО-01-19 Туманов Н.А.</span>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Текстовый редактор</title>
+  <meta charset="utf-8">
+  <link href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style type="text/css">
+    body {
+      text-align: center;
+      margin: 10px;
+      font-family: Verdana, Arial, sans-serif;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+<ul class="nav nav-tabs">
+  <a style="margin-left: 25px" class="navbar-brand" href="#">Совместный редактор</a>
+  <li class="nav-item">
+    <a class="nav-link" href="myfiles">Мои файлы</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" aria-current="page" href="login">Сменить аккаунт
+      <div style="font-size: 11px; display: inline">
+        <p style="display: inline">&#160;(Вы вошли как</p>
+        <p style="display: inline" th:text="${myName}"></p>
+        <p style="display: inline">)</p>
+      </div>
+    </a>
+  </li>
+</ul>
+<br>
+<h2 th:text="${file.getName()}"></h2>
+<div id="editor" contenteditable="true"
+     style="height: 50%; width: 100%; border: solid; border-width: 1px; text-align: left">
+</div>
+<script>
+  // если в нашем хранилище уже что-то есть…
+  if (localStorage.getItem('text_in_editor') !== null) {
+    // …то отображаем его содержимое в нашем редакторе
+    document.getElementById('editor').innerHTML = localStorage.getItem('text_in_editor');
+  }
+  // отслеживаем каждое нажатие клавиши и при каждом нажатии выполняем команду
+  document.addEventListener('keydown', function (e) {
+    // записываем содержимое нашего редактора в хранилище
+    localStorage.setItem('text_in_editor', document.getElementById('editor').innerHTML);
+  });
+</script>
+<div style="margin-top: 60px">&#160;</div>
+<footer class="footer mt-auto py-3 bg-light" style="position: fixed; z-index: 101; left: 0; bottom: 0; width: 100%; height: 80px;">
+  <div class="container">
+    <span class="text-muted">Работу по созданию приложения на тему "Совместный редактор документов" выполнил студент группы ИКБО-01-19 Туманов Н.А.</span>
+  </div>
+</footer>
+</body>
+</html>
